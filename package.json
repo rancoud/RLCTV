@@ -1,0 +1,28 @@
+{
+  "name": "rlctv",
+  "version": "1.0.0",
+  "description": "Bot Competition for Livecoding",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rancoud/RLCTV.git"
+  },
+  "keywords": [
+    "livecoding",
+    "bot",
+    "nodejs"
+  ],
+  "author": "rancoud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rancoud/RLCTV/issues"
+  },
+  "homepage": "https://github.com/rancoud/RLCTV#readme",
+  "devDependencies": {
+    "ltx": "^2.0.1",
+    "node-xmpp-client": "^2.0.2"
+  }
+}
