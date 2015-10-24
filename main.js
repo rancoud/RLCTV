@@ -1,15 +1,23 @@
 var child_process = require('child_process');
 
-var a = child_process.fork(__dirname + '/clt.js');
-var b = child_process.fork(__dirname + '/clt.js');
+var clients = [
+    {
+        room: 'rancoud@chat.livecoding.tv',
+        proc: undefined
+    }
+    ,
+    {
+        room: 'rlctv@chat.livecoding.tv',
+        proc: undefined
+    }
+];
 
-a.on('message', function(m) {
-    console.log('PARENT a got message:', m);
-});
+for (var i = 0; i < clients.length; i++) {
+    clients[i].proc = child_process.fork(__dirname + '/clt.js');
 
-b.on('message', function(m) {
-    console.log('PARENT b got message:', m);
-});
+    clients[i].proc.on('message', function(m) {
+        console.log('PARENT a got message:', m);
+    });
 
-a.send({ room: 'rancoud@chat.livecoding.tv' });
-b.send({ room: 'rlctv@chat.livecoding.tv' });
+    clients[i].proc.send({ room: clients[i].room });
+};
