@@ -5,10 +5,12 @@ Chat Bot Competition - RLCTV - https://www.livecoding.tv/rancoud
 - [x] se connecter au chat
 - [x] lire les messages
 - [x] lire les personnes entrante et sortante
-- [ ] detecter la fréquence des utilisateurs
-- [ ] saluer les nouveaux
-- [ ] reconnaitre les réguliers
-- [ ] tools : liste des outils utilisé
-- [ ] song playing
-- [ ] song request
-- [ ] detecter le premium de l'utilisateur
+- [x] repérer des commandes
+- [x] multiroom
+- [x] detecter la fréquence des utilisateurs
+- [x] saluer les nouveaux
+- [x] reconnaitre les réguliers
+- [x] tools : liste des outils utilisé
+- [x] song playing
+- [x] song request
+- [ ] interface web pour gestion
