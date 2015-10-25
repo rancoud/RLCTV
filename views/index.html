@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="youtube-iframe"></div>
+    <script>
+        function checkSongRequest(){
+            var r = new XMLHttpRequest();
+            r.open("GET", "/song-request", true);
+            r.onreadystatechange = function () {
+                if (r.readyState != 4 || r.status != 200) {
+                    return;
+                }
+                createIframe(JSON.parse(r.responseText));
+            };
+            r.send();
+
+            setTimeout(checkSongRequest, 1000);
+        }
+        function createIframe(msg){
+            if(msg.youtubeid === null) {
+                return;
+            }
+            var iframe = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+msg.youtubeid+'?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>';
+            document.getElementById('youtube-iframe').innerHTML = iframe;
+        }
+        checkSongRequest();
+    </script>
+</body>
+</html>

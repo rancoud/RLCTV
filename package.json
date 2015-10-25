@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/rancoud/RLCTV#readme",
   "devDependencies": {
+    "express": "^4.13.3",
+    "github": "^0.2.4",
     "ltx": "^2.0.1",
     "node-xmpp-client": "^2.0.2"
   }

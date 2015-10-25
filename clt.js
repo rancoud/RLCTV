@@ -36,8 +36,8 @@ function detectCommand(client, message) {
         return;
     }
 
-    if(message === "!commands") {
-        sendMessage(client, "!favorite_language\n!favorite_framework\n!favorite_ide\n!favorite_viewer\n!favorite_music\n!streamingguide\n!support\n!newfeatures\n!tools\n!current_task");
+    if(message === "!commands" || message === "!help") {
+        sendMessage(client, "Lists of commands:\n!favorite_language\n!favorite_framework\n!favorite_ide\n!favorite_viewer\n!favorite_music\n!streamingguide\n!support\n!newfeatures\n!tools\n!current_task\n!song_request Yl9p_qGQJlk");
     }
 
     if(message === "!favorite_language") {
@@ -89,6 +89,18 @@ function detectCommand(client, message) {
         var youtubeid = message.substr(14);
         process.send({ songrequest: youtubeid });
         sendMessage(client, "Song request has been sent");
+    }
+
+    if(message === "!github") {
+        sendMessage(client, "https://github.com/rancoud/RLCTV");
+    }
+
+    if(message === "!github commits") {
+        sendMessage(client, "2hours ago: add readme instructions for easier install");
+    }
+
+    if(message === "!github stats") {
+        sendMessage(client, "Original repo\n2 subscribers\n0 open issues\n0 stargazers\n0 forks");
     }
 }
 
@@ -147,12 +159,12 @@ function getRandomInt(min, max) {
 }
 
 function createSmallTalk(client) {
-    var messages = ["Have you built any project like this before?", "Are you a professional engineer or CS student?", "Am in Paris. Which city are you in?"];
+    var messages = ["Have you built any project like this before?", "Are you a professional engineer or student?", "Am in Paris. Which city are you in?"];
     sendMessage(client, messages[getRandomInt(0,messages.length-1)]);
 
     setTimeout(function(){
         createSmallTalk(client);
-    },5*60*1000);
+    },10*60*1000);
 }
 
 client.on('online', function(data) {
@@ -162,7 +174,7 @@ client.on('online', function(data) {
 
     setTimeout(function(){
         createSmallTalk(client);
-    },5*60*1000);
+    },10*60*1000);
 });
 
 client.on('stanza', function(stanza) {
