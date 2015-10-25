@@ -107,6 +107,12 @@ function detectCommand(client, message) {
 function updateListUsers(client, stanza) {
     var user = stanza.attrs.from.replace(confLogin.roomJid + '/', '');
     var role = undefined;
+
+    if(stanza.children[1] === undefined) {
+        console.log(stanza.toString());
+        return;
+    }
+
     if(stanza.children[1].children[0] !== undefined) {
         role = stanza.children[1].children[0].attrs.role;
     }
@@ -191,5 +197,5 @@ client.on('stanza', function(stanza) {
 
 process.on('message', function(m) {
     confLogin.roomJid = m.room;
-    process.send({ foo: 'bar' });
+    process.send(m);
 });

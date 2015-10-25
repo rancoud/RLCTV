@@ -1,0 +1,14 @@
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+<script>
+    $('#join').click(function(e){
+        e.preventDefault();
+        $.post('/join').done(function(data){console.log(data);});
+    });
+    $('#leave').click(function(e){
+        e.preventDefault();
+        $.post('/leave').done(function(data){console.log(data);});
+    });
+</script>
+    </body>
+</html>
