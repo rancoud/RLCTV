@@ -196,6 +196,30 @@ client.on('stanza', function(stanza) {
 });
 
 process.on('message', function(m) {
-    confLogin.roomJid = m.room;
-    process.send(m);
+    if(m['req'] !== undefined) {
+        if(m.req === 'CONF-ROOM') {
+            confLogin.roomJid = m.room;
+            process.send({
+                res: 'CONF-ROOM',
+                status: 'GOOD'
+            });
+        }
+        else if(m.req === 'LIST-USERS') {
+            console.log(m.callback);
+            process.send({
+                res: 'LIST-USERS',
+                data: {users:users},
+                callback: m.callback
+            });
+        }
+    }
+
+    if(m['room'] !== undefined) {
+        confLogin.roomJid = m.room;
+        process.send(m);
+    }
+
+    if(m['users'] !== undefined) {
+        process.send(users);
+    }
 });

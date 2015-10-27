@@ -1,4 +1,7 @@
 exports.index = function(req, res) {
     console.log('users.index');
-    res.render('users', {title:'Home'});
+
+    req.app.locals.clientManager.getListUsers(req.session.user.properties.login, function(data){
+        res.render('users', {title:'Home', listUsers:data.users});
+    });
 };

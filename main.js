@@ -7,11 +7,6 @@ var clients = [
         room: 'rancoud@chat.livecoding.tv',
         proc: undefined
     }
-    ,
-    {
-        room: 'rlctv@chat.livecoding.tv',
-        proc: undefined
-    }
 ];
 
 for (var i = 0; i < clients.length; i++) {
