@@ -9,9 +9,11 @@ exports.index = function(req, res) {
 exports.join = function(req, res) {
     console.log('dashboard.join');
 
-    var status = req.app.locals.clientManager.join(req.session.user.properties.login);
+    req.app.locals.warehouse.getRoomConfiguration(req.session.user.properties.login, function(configuration) {
+        var status = req.app.locals.clientManager.join(req.session.user.properties.login, configuration);
 
-    res.json({status:status});
+        res.json({status:status});
+    });
 };
 
 exports.leave = function(req, res) {

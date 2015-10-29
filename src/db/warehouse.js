@@ -59,4 +59,10 @@ Warehouse.prototype.findUserByLogin = function(login, callback) {
     });
 };
 
+Warehouse.prototype.getRoomConfiguration = function(room, callback) {
+    // list commands
+    // [{command,text,callback}]
+    return {};
+};
+
 module.exports = Warehouse;

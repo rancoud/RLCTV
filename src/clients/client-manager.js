@@ -28,7 +28,7 @@ ClientManager.prototype.getStatus = function(room) {
     return status;
 };
 
-ClientManager.prototype.join = function(room) {
+ClientManager.prototype.join = function(room, configuration) {
     var that = this;
     var child_process = require('child_process');
 
@@ -37,10 +37,10 @@ ClientManager.prototype.join = function(room) {
         if(that.clients[i].room === room) {
             found = true;
             if(that.clients[i].proc === null) {
-                that.clients[i].proc = child_process.fork(__dirname + '/../../clt.js');
+                that.clients[i].proc = child_process.fork(__dirname + '/client.js');
                 that.clients[i].proc.on('message', function(i) {
                     return function(msg) {
-                        console.log('clt.js sent a message:', msg);
+                        console.log('client.js sent a message:', msg);
                         if(msg.hash !== undefined) {
                             for (var j = 0; j < that.clients[i].callbacks.length; j++) {
                                 if(that.clients[i].callbacks[j].hash === msg.hash) {
@@ -67,13 +67,13 @@ ClientManager.prototype.join = function(room) {
     }
 
     var client = {
-        proc: child_process.fork(__dirname + '/../../clt.js'),
+        proc: child_process.fork(__dirname + '/client.js'),
         room: room,
         callbacks: []
     };
 
     client.proc.on('message', function(msg) {
-        console.log('clt.js sent a message:', msg);
+        console.log('client.js sent a message:', msg);
         if(msg.hash !== undefined) {
             for (var i = 0; i < client.callbacks.length; i++) {
                 if(client.callbacks[i].hash === msg.hash) {
@@ -87,7 +87,8 @@ ClientManager.prototype.join = function(room) {
 
     client.proc.send({
         req: 'CONF-ROOM',
-        room: room + '@chat.livecoding.tv'
+        room: room + '@chat.livecoding.tv',
+        configuration: configuration
     });
 
     that.clients.push(client);
@@ -101,7 +102,9 @@ ClientManager.prototype.leave = function(room, callback) {
     for(var i = 0, max = that.clients.length; i < max; i++) {
         if(that.clients[i].room === room) {
             if(that.clients[i].proc != null) {
-                that.clients[i].proc.kill();
+                that.clients[i].proc.send({
+                    req: 'LEAVE-ROOM'
+                });
                 that.clients[i].proc = null;
                 that.clients[i].callbacks = [];
             }
