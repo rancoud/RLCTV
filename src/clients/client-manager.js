@@ -37,9 +37,21 @@ ClientManager.prototype.join = function(room) {
         if(that.clients[i].room === room) {
             found = true;
             if(that.clients[i].proc === null) {
-                that.clients[i].proc.on('message', function(m) {
-                    console.log('clt.js sent a message:', m);
-                });
+                that.clients[i].proc = child_process.fork(__dirname + '/../../clt.js');
+                that.clients[i].proc.on('message', function(i) {
+                    return function(msg) {
+                        console.log('clt.js sent a message:', msg);
+                        if(msg.hash !== undefined) {
+                            for (var j = 0; j < that.clients[i].callbacks.length; j++) {
+                                if(that.clients[i].callbacks[j].hash === msg.hash) {
+                                    that.clients[i].callbacks[j].callback(msg.data);
+                                    that.clients[i].callbacks.splice(j, 1);
+                                    break;
+                                }
+                            };
+                        }
+                    };
+                }(i));
 
                 that.clients[i].proc.send({room:room+'@chat.livecoding.tv'});
                 that.clients[i].callbacks = [];
@@ -56,13 +68,20 @@ ClientManager.prototype.join = function(room) {
 
     var client = {
         proc: child_process.fork(__dirname + '/../../clt.js'),
-        room: room
+        room: room,
+        callbacks: []
     };
 
     client.proc.on('message', function(msg) {
         console.log('clt.js sent a message:', msg);
-        if(msg.callback){
-            msg.callback(msg.data);
+        if(msg.hash !== undefined) {
+            for (var i = 0; i < client.callbacks.length; i++) {
+                if(client.callbacks[i].hash === msg.hash) {
+                    client.callbacks[i].callback(msg.data);
+                    client.callbacks.splice(i, 1);
+                    break;
+                }
+            };
         }
     });
 
@@ -81,9 +100,11 @@ ClientManager.prototype.leave = function(room, callback) {
 
     for(var i = 0, max = that.clients.length; i < max; i++) {
         if(that.clients[i].room === room) {
-            that.clients[i].proc.kill();
-            that.clients[i].proc = null;
-            that.clients[i].callbacks = [];
+            if(that.clients[i].proc != null) {
+                that.clients[i].proc.kill();
+                that.clients[i].proc = null;
+                that.clients[i].callbacks = [];
+            }
             return true;
         }
     }
@@ -94,15 +115,21 @@ ClientManager.prototype.leave = function(room, callback) {
 ClientManager.prototype.getListUsers = function(room, callback) {
     var that = this;
     var listUsers = [];
-console.log(room);
-console.log(callback);
+
+    var hash = this.getHash();
+
     var client = that.getClient(room);
+    client.callbacks.push({hash:hash, callback:callback});
     client.proc.send({
         req: 'LIST-USERS',
-        callback: callback
+        hash: hash
     });
 
     return listUsers;
+};
+
+ClientManager.prototype.getHash = function() {
+    return Date.now();
 };
 
 module.exports = ClientManager;

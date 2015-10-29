@@ -35,10 +35,20 @@ function GraphManager(conf) {
         return;
     }
 
+    this.conf = conf;
     this.neo4j = require('neo4j');
     this.db = new this.neo4j.GraphDatabase('http://'+conf.login+':'+conf.password+'@localhost:7474');
     this.error = '';
 }
+
+GraphManager.prototype.neo4jIsOnline = function(callback) {
+    var http = require('http');
+    http.get('http://'+this.conf.login+':'+this.conf.password+'@localhost:7474', function(res){
+        callback(true);
+    }).on('error', function(e) {
+        callback(false);
+    });
+};
 
 GraphManager.prototype.query = function(query, params, callback) {
     var that = this;

@@ -176,7 +176,7 @@ function createSmallTalk(client) {
 client.on('online', function(data) {
     console.log('online');
     sendPresence(client);
-    sendMessage(client, "Hello, current streamer is crazy. Have a nice day!");
+    //sendMessage(client, "Hello, current streamer is crazy. Have a nice day!");
 
     setTimeout(function(){
         createSmallTalk(client);
@@ -205,11 +205,10 @@ process.on('message', function(m) {
             });
         }
         else if(m.req === 'LIST-USERS') {
-            console.log(m.callback);
             process.send({
                 res: 'LIST-USERS',
                 data: {users:users},
-                callback: m.callback
+                hash: m.hash
             });
         }
     }

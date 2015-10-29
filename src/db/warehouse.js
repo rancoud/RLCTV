@@ -9,19 +9,28 @@ Warehouse.prototype.constructor = Warehouse;
 
 Warehouse.prototype.dataInitialize = function(callback) {
     var that = this;
-    that.getNodesByProperties({login:"admin", password:"admin"}, function(results){
-        if(results == null) {
-            console.log("CREATE DEFAULT BO USER");
-            that.addNode('BackofficeUser', {login:"admin", password:"admin", role:"superadmin"}, function(results){
-                that.addConstraint('User', 'login', function() {
-                    callback();
+
+    that.neo4jIsOnline(function(isOnline){
+        if(!isOnline) {
+            throw "Neo4j is down"; 
+        }
+
+        that.getNodesByProperties({login:"admin", password:"admin"}, function(results){
+            if(results == null) {
+                console.log("CREATE DEFAULT BO USER");
+                that.addNode('BackofficeUser', {login:"admin", password:"admin", role:"superadmin"}, function(results){
+                    that.addConstraint('User', 'login', function() {
+                        callback();
+                    });
                 });
-            });
-        }
-        else {
-            callback();
-        }
+            }
+            else {
+                callback();
+            }
+        });
+
     });
+
 };
 
 Warehouse.prototype.addUser = function(login, password, callback) {
