@@ -2,7 +2,7 @@
 Chat Bot Competition - RLCTV - https://www.livecoding.tv/rancoud
 
 ## How to configure Standalone
-1. Rename file conf.login.sample.js in conf.login.sample.js  
+1. Rename file conf.login.sample.js in conf.login.js  
 2. Fill informations
 3. Change in main.js the rooms you want to join by adding or deleting object in clients array
 4. npm install
