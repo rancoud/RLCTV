@@ -23,18 +23,18 @@ Chat Bot Competition - RLCTV - https://www.livecoding.tv/rancoud
 - [ ] interface web pour gestion
 
 ## Interface web
-node app.js
-localhost:4040
-/ -> accueil explication du service
-/login -> save conf for log
-/register -> register
-/logout -> disconnect
-/dashboard -> join/leave bot
-/users -> lists users (avec fréquence)
-/users/settings -> parametrages des utilisateurs
-/infos/settings -> parametrage des infos
-/commands -> list des commandes
-/commands/edit -> edition des commandes
-/songs -> list des chansons avec la vidéo du song request
-/songs/settings -> parametrages / bans
-/modules -> listes des modules
+- node app.js
+- localhost:4040
+- / -> accueil explication du service
+- /login -> save conf for log
+- /register -> register
+- /logout -> disconnect
+- /dashboard -> join/leave bot
+- /users -> lists users (avec fréquence)
+- /users/settings -> parametrages des utilisateurs
+- /infos/settings -> parametrage des infos
+- /commands -> list des commandes
+- /commands/edit -> edition des commandes
+- /songs -> list des chansons avec la vidéo du song request
+- /songs/settings -> parametrages / bans
+- /modules -> listes des modules
