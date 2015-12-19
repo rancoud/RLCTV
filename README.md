@@ -1,5 +1,6 @@
 # RLCTV
-Chat Bot Competition - RLCTV - https://www.livecoding.tv/rancoud
+Chat Bot Competition - RLCTV - https://www.livecoding.tv/rancoud  
+Finished last position -> http://blog.livecoding.tv/2015/12/14/chat-bot-competition-voting/  
 
 ## How to configure Standalone
 1. Rename file conf.login.sample.js in conf.login.js  
