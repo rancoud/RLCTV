@@ -37,51 +37,7 @@ function detectCommand(client, message) {
     }
 
     if(message === "!commands" || message === "!help") {
-        sendMessage(client, "Lists of commands:\n!favorite_language\n!favorite_framework\n!favorite_ide\n!favorite_viewer\n!favorite_music\n!streamingguide\n!support\n!newfeatures\n!tools\n!current_task\n!song_request Yl9p_qGQJlk");
-    }
-
-    if(message === "!favorite_language") {
-        sendMessage(client, "PHP");
-    }
-
-    if(message === "!favorite_framework") {
-        sendMessage(client, "Wordpress");
-    }
-
-    if(message === "!favorite_ide") {
-        sendMessage(client, "Sublime Text 3");
-    }
-
-    if(message === "!favorite_viewer") {
-        sendMessage(client, "you");
-    }
-
-    if(message === "!favorite_music") {
-        sendMessage(client, "Taylor Swift - White Horse > https://www.youtube.com/watch?v=D1Xr-JFLxik");
-    }
-
-    if(message === "!streamingguide") {
-        sendMessage(client, "Livecoding.tv streaming guide for Mac, Windows and Linux is here: https://www.livecoding.tv/streamingguide/");
-    }
-
-    if(message === "!support") {
-        sendMessage(client, "Livecoding.tv support page is here: http://support.livecoding.tv/hc/en-us/");
-    }
-
-    if(message === "!newfeatures") {
-        sendMessage(client, "Here is a list of new features Livecoding.tv released: \n Hire a Streamer & Pay \n Reddit stream announcement");
-    }
-
-    if(message === "!song") {
-        sendMessage(client, "Current song playing is “Taylor Swift - White Horse”");
-    }
-
-    if(message === "!tools") {
-        sendMessage(client, "Only my brain");
-    }
-
-    if(message === "!current_task") {
-        sendMessage(client, "Dev ChatBot");
+        sendMessage(client, "Lists of commands:\n!song_request Yl9p_qGQJlk");
     }
 
     if(message.substr(0, 14) === "!song_request ") {
@@ -91,17 +47,6 @@ function detectCommand(client, message) {
         sendMessage(client, "Song request has been sent");
     }
 
-    if(message === "!github") {
-        sendMessage(client, "https://github.com/rancoud/RLCTV");
-    }
-
-    if(message === "!github commits") {
-        sendMessage(client, "2hours ago: add readme instructions for easier install");
-    }
-
-    if(message === "!github stats") {
-        sendMessage(client, "Original repo\n2 subscribers\n0 open issues\n0 stargazers\n0 forks");
-    }
 }
 
 function updateListUsers(client, stanza) {
@@ -134,7 +79,9 @@ function updateListUsers(client, stanza) {
             }
         }
         users = _tmp;
-        sendMessage(client, "See you soon "+user+"!");
+        if(user !== "tasakasan"){
+            sendMessage(client, "See you soon "+user+"!");
+        }
     }
     else {
         //in
@@ -164,23 +111,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createSmallTalk(client) {
-    var messages = ["Have you built any project like this before?", "Are you a professional engineer or student?", "Am in Paris. Which city are you in?"];
-    sendMessage(client, messages[getRandomInt(0,messages.length-1)]);
-
-    setTimeout(function(){
-        createSmallTalk(client);
-    },10*60*1000);
-}
-
 client.on('online', function(data) {
     console.log('online');
     sendPresence(client);
-    //sendMessage(client, "Hello, current streamer is crazy. Have a nice day!");
-
-    setTimeout(function(){
-        createSmallTalk(client);
-    },10*60*1000);
 });
 
 client.on('stanza', function(stanza) {
@@ -221,4 +154,32 @@ process.on('message', function(m) {
     if(m['users'] !== undefined) {
         process.send(users);
     }
+});
+
+function toUnicode(theString) {
+  var unicodeString = '';
+  for (var i=0; i < theString.length; i++) {
+    var theUnicode = theString.charCodeAt(i).toString(16).toUpperCase();
+    while (theUnicode.length < 4) {
+      theUnicode = '0' + theUnicode;
+    }
+    theUnicode = '\\u' + theUnicode;
+    unicodeString += theUnicode;
+  }
+  return unicodeString;
+}
+
+process.stdin.setEncoding('utf8');
+process.stdin.on('readable', function() {
+  var chunk = process.stdin.read();
+  if (chunk !== null) {
+    chunk = chunk.trim();
+    if(chunk.length > 0) {
+      sendMessage(client, chunk);
+    }
+  }
+});
+
+process.stdin.on('end', function() {
+  process.stdout.write('end');
 });
